@@ -277,6 +277,23 @@ Another way to do it
   }
 ```
 
+- For custom error message and more validation
+
+```typescript
+import { IsInt, IsPositive, IsString, Length } from 'class-validator';
+
+export class CreatePropertyDto {
+  @IsString()
+  @Length(2, 20, { message: 'Name is too short or too long' })
+  name: string;
+  @IsString()
+  description: string;
+  @IsInt()
+  @IsPositive()
+  area: number;
+}
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
