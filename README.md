@@ -21,8 +21,14 @@ export class AppController {
 
 ```
 
-- To add a new module
+- To add/generate a new module
 
 ```bash
 nest g module modulename
+```
+
+- To add/generate a new controller
+
+```bash
+nest g co modulename
 ```
