@@ -416,7 +416,58 @@ import { APP_PIPE } from '@nestjs/core';
 export class PropertyModule {}
 ```
 
-## Module level Validation
+## Transform the incoming request data to the desired type and enable the implicit conversion of the incoming request data to the desired type
+
+```typescript
+import { Module, ValidationPipe } from '@nestjs/common';
+import { PropertyController } from './property.controller';
+import { APP_PIPE } from '@nestjs/core';
+
+@Module({
+  controllers: [PropertyController],
+  providers: [
+    {
+      provide: APP_PIPE,
+      // useClass: ValidationPipe, // Global validation without any options -- useClass
+
+      // Global validation with options -- useValue
+      useValue: new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true, // This will transform the incoming request data to the desired type
+        transformOptions: { enableImplicitConversion: true }, // This will enable the implicit conversion of the incoming request data to the desired type
+      }),
+    },
+  ],
+})
+export class PropertyModule {}
+```
+
+## Validation for params and searh query
+
+```typescript
+
+  // make a dto for the param along with the validation
+  import { IsInt, IsPositive } from 'class-validator';
+
+  export class idParamDto {
+    @IsInt()
+    @IsPositive()
+    id: number;
+  }
+
+ // Then type it in the endpoint like so
+   @Patch(':id')
+  update(
+    @Param() param: idParamDto,
+    @Body()
+    body: CreatePropertyDto,
+  ) {
+    return body;
+  }
+
+
+```
 
 ## Best Practices
 

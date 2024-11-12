@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
+import { idParamDto } from './dto/idParam.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -33,6 +34,7 @@ export class PropertyController {
 
   @Patch(':id')
   update(
+    @Param() param: idParamDto,
     @Body()
     body: CreatePropertyDto,
   ) {
