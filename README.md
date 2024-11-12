@@ -502,6 +502,69 @@ export class ParseIdPipe implements PipeTransform<string, number> {
 
 ## Validation with ZOD
 
+```typescript
+// To use zod for validation, we don't need to define the provider for global validation in the module
+import { Module } from '@nestjs/common';
+import { PropertyController } from './property.controller';
+// import { APP_PIPE } from '@nestjs/core';
+
+@Module({
+  controllers: [PropertyController],
+  // providers: [
+  //   {
+  //     provide: APP_PIPE,
+  //     // useClass: ValidationPipe, // Global validation without any options -- useClass
+
+  //     // Global validation with options -- useValue
+  //     useValue: new ValidationPipe({
+  //       whitelist: true,
+  //       forbidNonWhitelisted: true,
+  //       transform: true, // This will transform the incoming request data to the desired type
+  //       transformOptions: { enableImplicitConversion: true }, // This will enable the implicit conversion of the incoming request data to the desired type
+  //     }),
+  //   },
+  // ],
+})
+export class PropertyModule {}
+
+//Create a zod dto -- createPropertyZod.dto.ts
+import { z } from 'zod';
+
+export const createPropertySchema = z
+  .object({
+    name: z.string(),
+    description: z.string().min(5),
+    area: z.number().positive(),
+  })
+  .required();
+
+export type CreatePropertyZodDto = z.infer<typeof createPropertySchema>;
+
+// then we can create a zodValidationPipeline.ts
+import { BadRequestException, PipeTransform } from '@nestjs/common';
+import { ZodSchema } from 'zod';
+
+export class ZodValidationPipe implements PipeTransform {
+  constructor(private schema: ZodSchema) {}
+
+  transform(value: any) {
+    const parsedValue = this.schema.safeParse(value);
+    if (parsedValue.success) return parsedValue.data;
+    throw new BadRequestException(parsedValue.error.format());
+  }
+}
+
+// then just use it in endpoint in the controller
+  @Post()
+  @UsePipes(new ZodValidationPipe(createPropertySchema))
+  create(
+    @Body()
+    body: CreatePropertyZodDto,
+  ) {
+    return body;
+  }
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
