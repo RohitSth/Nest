@@ -469,6 +469,37 @@ export class PropertyModule {}
 
 ```
 
+## Custom Transform Pipes
+
+```typescript
+import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+
+@Injectable() // This is a provider that can be injected into other components -- to use this outside of the module
+export class ParseIdPipe implements PipeTransform<string, number> {
+  transform(value: string): number {
+    const val = parseInt(value, 10);
+    if (isNaN(val)) {
+      throw new BadRequestException('Id must be a number');
+    }
+    if (val <= 0) {
+      throw new BadRequestException('Id must be a positive number');
+    }
+    return val;
+  }
+}
+
+// then use it like this
+
+ @Patch(':id')
+  update(
+    @Param('id', ParseIdPipe) id,
+    @Body()
+    body: CreatePropertyDto,
+  ) {
+    return body;
+  }
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
