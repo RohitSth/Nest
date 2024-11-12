@@ -265,6 +265,18 @@ To throw an error if any extra fields are present in the request body
   }
 ```
 
+Another way to do it
+
+```bash
+  @Post()
+  create(
+    @Body(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) // another way of doing it
+    body: CreatePropertyDto,
+  ) {
+    return body;
+  }
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values

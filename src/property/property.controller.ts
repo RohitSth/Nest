@@ -8,7 +8,6 @@ import {
   Post,
   Put,
   Query,
-  UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
@@ -25,8 +24,11 @@ export class PropertyController {
   //     return name;
   //   }
   @Post()
-  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) //whitelist: true will remove any extra fields that are not defined in the CreatePropertyDto\n//forbidNonWhitelisted: true will throw an error if any extra fields are present in the request body
-  create(@Body() body: CreatePropertyDto) {
+  //   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) //whitelist: true will remove any extra fields that are not defined in the CreatePropertyDto\n//forbidNonWhitelisted: true will throw an error if any extra fields are present in the request body
+  create(
+    @Body(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) // another way of doing it
+    body: CreatePropertyDto,
+  ) {
     return body;
   }
 
