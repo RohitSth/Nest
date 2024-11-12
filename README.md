@@ -500,6 +500,8 @@ export class ParseIdPipe implements PipeTransform<string, number> {
   }
 ```
 
+## Validation with ZOD
+
 ## Best Practices
 
 1. Always specify types for parameters and return values

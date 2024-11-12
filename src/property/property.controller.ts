@@ -8,9 +8,15 @@ import {
   Patch,
   Post,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { ParseIdPipe } from './pipes/parseIdpipe';
+import { ZodValidationPipe } from './pipes/zodValidationPipe';
+import {
+  createPropertySchema,
+  CreatePropertyZodDto,
+} from './dto/createPropertyZod.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -24,10 +30,10 @@ export class PropertyController {
   //     return name;
   //   }
   @Post()
-  //   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) //whitelist: true will remove any extra fields that are not defined in the CreatePropertyDto\n//forbidNonWhitelisted: true will throw an error if any extra fields are present in the request body
+  @UsePipes(new ZodValidationPipe(createPropertySchema))
   create(
     @Body()
-    body: CreatePropertyDto,
+    body: CreatePropertyZodDto,
   ) {
     return body;
   }
