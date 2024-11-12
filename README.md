@@ -11,6 +11,9 @@
 - [Request Handling](#request-handling)
   - [Body Handling](#body-handling)
   - [HTTP Status Codes](#http-status-codes)
+- [Data Transformation & Validation](#data-transformation--validation)
+  - [Built-in Pipes](#built-in-pipes)
+  - [Custom Pipes](#custom-pipes)
 
 ## Project Setup
 
@@ -139,6 +142,86 @@ Common HTTP status codes:
 - 404: Not Found
 - 500: Internal Server Error
 
+## Data Transformation & Validation
+
+NestJS provides powerful pipes for data transformation and validation. Pipes can transform input data to the desired format and validate it before it reaches the route handler.
+
+### Built-in Pipes
+
+1. **ParseIntPipe**: Automatically transforms string values to integers
+
+```typescript
+@Get(':id')
+findOne(@Param('id', ParseIntPipe) id: number) {
+  console.log(typeof id); // 'number'
+  return `This action returns a property ${id}`;
+}
+```
+
+2. **ParseFloatPipe**: Transforms string values to floating-point numbers
+
+```typescript
+@Get(':price')
+findByPrice(@Param('price', ParseFloatPipe) price: number) {
+  return `Items with price ${price}`;
+}
+```
+
+3. **ParseBoolPipe**: Transforms string values to booleans
+
+```typescript
+@Get(':isActive')
+findActive(@Param('isActive', ParseBoolPipe) isActive: boolean) {
+  return `Active status: ${isActive}`;
+}
+```
+
+4. **ParseArrayPipe**: Transforms array-like string values to arrays
+
+```typescript
+@Post()
+createMany(@Body(new ParseArrayPipe({ items: Number })) items: number[]) {
+  return items;
+}
+```
+
+5. **For search Queries**:
+
+```typescript
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id, @Query('sort', ParseBoolPipe) sort) {
+    console.log(typeof id); // number
+    console.log(typeof sort); // boolean
+
+    return `This action returns a property ${id}`;
+  }
+```
+
+### Custom Pipes
+
+You can create custom pipes for specific transformation needs:
+
+```typescript
+import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
+
+@Injectable()
+export class CustomTransformPipe implements PipeTransform {
+  transform(value: any, metadata: ArgumentMetadata) {
+    // Your transformation logic here
+    return transformedValue;
+  }
+}
+```
+
+Usage:
+
+```typescript
+@Get(':id')
+findOne(@Param('id', CustomTransformPipe) id) {
+  return `Transformed value: ${id}`;
+}
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
@@ -147,9 +230,12 @@ Common HTTP status codes:
 4. Use services for business logic
 5. Implement error handling using exception filters
 6. Use DTOs (Data Transfer Objects) for request validation
+7. Use appropriate pipes for data transformation and validation
+8. Implement custom pipes for specific business logic needs
 
 ## Additional Resources
 
 - [Official NestJS Documentation](https://docs.nestjs.com/)
 - [NestJS GitHub Repository](https://github.com/nestjs/nest)
 - [NestJS CLI Documentation](https://docs.nestjs.com/cli/overview)
+- [NestJS Pipes Documentation](https://docs.nestjs.com/pipes)
