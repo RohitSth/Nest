@@ -582,6 +582,65 @@ export class ZodValidationPipe implements PipeTransform {
 
 ## To validate headers
 
+```typescript
+// make a headers dto
+import { Expose } from 'class-transformer';
+import { IsString } from 'class-validator';
+
+export class HeadersDto {
+  @IsString()
+  @Expose({ name: 'access-token' })
+  accessToken: string;
+}
+
+// then use it in the endpoint
+  @Patch(':id')
+  update(
+    @Param('id', ParseIdPipe) id,
+    @Body()
+    body: CreatePropertyDto,
+    @Headers('host') header: HeadersDto,
+  ) {
+    return header;
+  }
+
+
+// but it will not work for the headers, so we need to create a custom decorator for validation
+
+
+// so to create a custom decorator
+
+// create a request-header in pipes
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+import { validateOrReject } from 'class-validator';
+
+export const RequestHeader = createParamDecorator(
+  async (targetDto: any, ctx: ExecutionContext) => {
+    const headers = ctx.switchToHttp().getRequest().headers;
+    const dto = plainToInstance(targetDto, headers, {
+      excludeExtraneousValues: true,
+    });
+    await validateOrReject(dto);
+    return dto;
+  },
+);
+
+
+// then use it like this
+  @Patch(':id')
+  update(
+    @Param('id', ParseIdPipe) id,
+    @Body()
+    body: CreatePropertyDto,
+    @RequestHeader(new ValidationPipe({ validateCustomDecorators: true }))
+    header: HeadersDto,
+  ) {
+    return header;
+  }
+
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
