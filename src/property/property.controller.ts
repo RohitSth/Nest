@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   Param,
   ParseBoolPipe,
   ParseIntPipe,
@@ -43,8 +44,9 @@ export class PropertyController {
     @Param('id', ParseIdPipe) id,
     @Body()
     body: CreatePropertyDto,
+    @Headers('host') header,
   ) {
-    return body;
+    return header;
   }
 
   @Get(':id') //dynamic parameter
