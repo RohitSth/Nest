@@ -565,6 +565,23 @@ export class ZodValidationPipe implements PipeTransform {
   }
 ```
 
+## To Access Headers
+
+```typescript
+// Just use this in the endpoint
+  @Patch(':id')
+  update(
+    @Param('id', ParseIdPipe) id,
+    @Body()
+    body: CreatePropertyDto,
+    @Headers('host') header,
+  ) {
+    return header;
+  }
+```
+
+## To validate headers
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
