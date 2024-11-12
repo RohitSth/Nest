@@ -78,3 +78,13 @@ Can also be written as
     return name;
   }
 ```
+
+- To change http status
+
+```bash
+  @Post()
+  @HttpCode(202) // This is how we can change the http status code for any the http requests we want
+  create(@Body('name') name) {
+    return name;
+  }
+```

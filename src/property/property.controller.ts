@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 
 @Controller('property')
 export class PropertyController {
@@ -8,6 +16,7 @@ export class PropertyController {
   }
 
   @Post()
+  @HttpCode(202) // This is how we can change the http status code for any the http requests we want
   create(@Body('name') name) {
     return name;
   }
