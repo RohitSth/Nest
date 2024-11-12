@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Put } from '@nestjs/common';
 
 @Controller('property')
 export class PropertyController {
@@ -15,5 +15,10 @@ export class PropertyController {
   @Put()
   update() {
     return 'This action updates a property';
+  }
+
+  @Get(':id') //dynamic parameter
+  findOne(@Param('id') id: string) {
+    return `This action returns a property ${id}`;
   }
 }
