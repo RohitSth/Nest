@@ -32,3 +32,31 @@ nest g module modulename
 ```bash
 nest g co modulename
 ```
+
+- For dynamic routes
+
+```bash
+  @Get(':id') //dynamic parameter
+    findOne(@Param('id') id: string) {
+      return `This action returns a property ${id}`;
+  }
+```
+
+- For multiple Params
+
+```bash
+
+  @Get(':id/:slug') //this returns an object with id and slug. Eg. {id: 1, slug: 'property-1'}
+    findOne(@Param() id) {
+      return id;
+    }
+```
+
+Can also be written as
+
+```bash
+@Get(':id/:slug') //this returns an object with id and slug. Eg. {id: 1, slug: 'property-1'}
+  findOne(@Param('id') id, @Param('slug') slug) {
+    return `id: ${id}, slug: ${slug}`;
+  }
+```
