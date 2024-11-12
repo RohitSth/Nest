@@ -294,6 +294,59 @@ export class CreatePropertyDto {
 }
 ```
 
+## How to make groups so that I cacn use the same but slightly changed validation for create and update
+
+```typescript
+@Post()
+  create(
+    @Body(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        groups: ['create'],
+        always: true,
+      }),
+    )
+    body: CreatePropertyDto,
+  ) {
+    return body;
+  }
+
+  @Patch(':id')
+  update(
+    @Body(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        groups: ['update'],
+        always: true,
+      }),
+    )
+    body: CreatePropertyDto,
+  ) {
+    return body;
+  }
+
+  // Then in dto
+
+  import { IsInt, IsPositive, IsString, Length } from 'class-validator';
+
+  export class CreatePropertyDto {
+    @IsString()
+    @Length(2, 20, { message: 'Name is too short or too long' })
+    name: string;
+    @IsString()
+    @Length(2, 10, { groups: ['create'] })
+    @Length(1, 15, { groups: ['update'] })
+    description: string;
+
+    @IsInt()
+    @IsPositive()
+    area: number;
+  }
+
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
