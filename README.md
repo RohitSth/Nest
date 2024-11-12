@@ -60,3 +60,21 @@ Can also be written as
     return `id: ${id}, slug: ${slug}`;
   }
 ```
+
+- To access the body
+
+```bash
+  @Post()
+  create(@Body() body) {
+    return body;
+  }
+```
+
+- To access specific part of the body
+
+```bash
+  @Post() // This will only return what's in the name
+  create(@Body('name') name) {
+    return name;
+  }
+```
