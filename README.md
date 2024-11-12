@@ -222,6 +222,49 @@ findOne(@Param('id', CustomTransformPipe) id) {
 }
 ```
 
+### Class Transformers and Validators
+
+Install the dependenies
+
+```bash
+npm i --save class-validator class-transformer
+```
+
+```bash
+// In /property/dto/createProperty.dto.ts
+import { IsInt, IsString } from 'class-validator';
+
+export class CreatePropertyDto {
+  @IsString()
+  name: string;
+  @IsString()
+  description: string;
+  @IsInt()
+  area: number;
+}
+
+```
+
+To remove any extra fields that are not defined in the CreatePropertyDto
+
+```bash
+  @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true })) //whitelist: true will remove any extra fields that are not defined in the CreatePropertyDto
+  create(@Body() body: CreatePropertyDto) {
+    return body;
+  }
+```
+
+To throw an error if any extra fields are present in the request body
+
+```bash
+  @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) //whitelist: true will remove any extra fields that are not defined in the CreatePropertyDto\n//forbidNonWhitelisted: true will throw an error if any extra fields are present in the request body
+  create(@Body() body: CreatePropertyDto) {
+    return body;
+  }
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values

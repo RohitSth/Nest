@@ -2,14 +2,16 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
   Param,
   ParseBoolPipe,
   ParseIntPipe,
   Post,
   Put,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
+import { CreatePropertyDto } from './dto/createProperty.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -18,10 +20,14 @@ export class PropertyController {
     return 'This action returns all properties';
   }
 
+  //   @HttpCode(202) // This is how we can change the http status code for any the http requests we want
+  //   create(@Body('name') name) {
+  //     return name;
+  //   }
   @Post()
-  @HttpCode(202) // This is how we can change the http status code for any the http requests we want
-  create(@Body('name') name) {
-    return name;
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) //whitelist: true will remove any extra fields that are not defined in the CreatePropertyDto\n//forbidNonWhitelisted: true will throw an error if any extra fields are present in the request body
+  create(@Body() body: CreatePropertyDto) {
+    return body;
   }
 
   @Put()
