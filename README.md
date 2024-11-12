@@ -294,7 +294,7 @@ export class CreatePropertyDto {
 }
 ```
 
-## How to make groups so that I cacn use the same but slightly changed validation for create and update
+## How to make groups so that we can use the same but slightly changed validation for create and update
 
 ```typescript
 @Post()
@@ -346,6 +346,77 @@ export class CreatePropertyDto {
   }
 
 ```
+
+## Global Validation
+
+```bash
+// In the main.ts
+
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+  await app.listen(process.env.PORT ?? 3000);
+}
+bootstrap();
+
+
+// So after we add global validation in this we can remove the validation form endpoints in the controller
+  @Patch(':id')
+  update(
+    @Body(
+    //   new ValidationPipe({
+    //     whitelist: true,
+    //     forbidNonWhitelisted: true,
+    //     groups: ['update'],
+    //     always: true,
+    //   }),
+    )
+    body: CreatePropertyDto,
+  ) {
+    return body;
+  }
+
+```
+
+## NOTE :: Groups doesnot work on global validation
+
+## To use global validation in only a specificc module
+
+Move the useGlobalPipes from main.ts and use it as a provider in the module like this as shown below
+
+```typescript
+import { Module, ValidationPipe } from '@nestjs/common';
+import { PropertyController } from './property.controller';
+import { APP_PIPE } from '@nestjs/core';
+
+@Module({
+  controllers: [PropertyController],
+  providers: [
+    {
+      provide: APP_PIPE,
+      // useClass: ValidationPipe, // Global validation without any options -- useClass
+
+      // Global validation with options -- useValue
+      useValue: new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
+    },
+  ],
+})
+export class PropertyModule {}
+```
+
+## Module level Validation
 
 ## Best Practices
 
