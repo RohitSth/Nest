@@ -5,8 +5,8 @@ import {
   Param,
   ParseBoolPipe,
   ParseIntPipe,
+  Patch,
   Post,
-  Put,
   Query,
   ValidationPipe,
 } from '@nestjs/common';
@@ -26,15 +26,32 @@ export class PropertyController {
   @Post()
   //   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) //whitelist: true will remove any extra fields that are not defined in the CreatePropertyDto\n//forbidNonWhitelisted: true will throw an error if any extra fields are present in the request body
   create(
-    @Body(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) // another way of doing it
+    @Body(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        groups: ['create'],
+        always: true,
+      }),
+    )
     body: CreatePropertyDto,
   ) {
     return body;
   }
 
-  @Put()
-  update() {
-    return 'This action updates a property';
+  @Patch(':id')
+  update(
+    @Body(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        groups: ['update'],
+        always: true,
+      }),
+    )
+    body: CreatePropertyDto,
+  ) {
+    return body;
   }
 
   @Get(':id') //dynamic parameter
