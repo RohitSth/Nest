@@ -15,6 +15,7 @@ import { ParseIdPipe } from './pipes/parseIdpipe';
 import { HeadersDto } from './dto/headers.dto';
 import { RequestHeader } from './pipes/request-header';
 import { PropertyService } from './property.service';
+import { UpdatePropertDto } from './dto/updateProperty.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -42,10 +43,8 @@ export class PropertyController {
   update(
     @Param('id', ParseIdPipe) id,
     @Body()
-    body: CreatePropertyDto,
-    @RequestHeader(new ValidationPipe({ validateCustomDecorators: true }))
-    header: HeadersDto,
+    body: UpdatePropertDto,
   ) {
-    return this.propertyService.update();
+    return this.propertyService.update(id, body);
   }
 }

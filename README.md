@@ -870,6 +870,12 @@ export class PropertyService {
 }
 ```
 
+## For extending dto, eg. update dto an be extended of create dto
+
+```bash
+npm i @nestjs/mapped-types
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
