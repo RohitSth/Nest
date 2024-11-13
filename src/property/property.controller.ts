@@ -28,9 +28,9 @@ export class PropertyController {
   @Post()
   create(
     @Body()
-    body: CreatePropertyDto,
+    dto: CreatePropertyDto,
   ) {
-    return this.propertyService.create();
+    return this.propertyService.create(dto);
   }
 
   @Patch(':id')
