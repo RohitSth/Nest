@@ -30,7 +30,7 @@ export class PropertyController {
     @Body()
     body: CreatePropertyDto,
   ) {
-    return this.propertyService.create(body);
+    return this.propertyService.create();
   }
 
   @Patch(':id')
@@ -46,7 +46,7 @@ export class PropertyController {
 
   @Get(':id') //dynamic parameter
   findOne(@Param('id', ParseIntPipe) id, @Query('sort', ParseBoolPipe) sort) {
-    return this.propertyService.findOne(id, sort);
+    return this.propertyService.findOne();
   }
 
   //   @Get(':id/:slug') //this returns an object with id and slug. Eg. {id: 1, slug: 'property-1'}

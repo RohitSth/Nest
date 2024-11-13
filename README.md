@@ -740,6 +740,56 @@ export const pgConfig: PostgresConnectionOptions = {
 };
 ```
 
+## Creating the first entity
+
+- Make an entities dir in src directory
+
+- Then in it make a property.entity.ts file
+
+```typescript
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+export class Propery {
+  // @PrimaryColumn() // This will make this a primary key
+  @PrimaryGeneratedColumn() // This will automatically generate a unique id for each property and is a primary key
+  id: number;
+
+  @Column()
+  name: string;
+
+  @Column()
+  description: string;
+
+  @Column({ default: 0 })
+  price: number;
+}
+```
+
+- Then add the enity in dbConfig.ts
+
+```typescript
+import { Property } from 'src/entities/property.entity';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+
+export const pgConfig: PostgresConnectionOptions = {
+  url: 'your db url',
+  type: 'postgres',
+  port: 3306,
+  entities: [Property],
+  synchronize: true, // This will automatically create the tables in the database // For development only, use false for production
+};
+```
+
+- Then run the dev server
+
+```bash
+
+npm run start:dev
+
+// After this, this will create a schema in the database you are using, for instance if I'm using neon, this will show the new schema named propery in the tables tab
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
