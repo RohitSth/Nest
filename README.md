@@ -790,6 +790,20 @@ npm run start:dev
 // After this, this will create a schema in the database you are using, for instance if I'm using neon, this will show the new schema named propery in the tables tab
 ```
 
+## To add enitites automaticallyy in the entities list in dbConfig
+
+```typescript
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+
+export const pgConfig: PostgresConnectionOptions = {
+  url: 'your db url',
+  type: 'postgres',
+  port: 3306,
+  entities: [__dirname + '/**/*.entity{.ts,.js}'], // This will automatically load all the entities from the entities folder
+  synchronize: true, // This will automatically create the tables in the database // For development only, use false for production
+};
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
