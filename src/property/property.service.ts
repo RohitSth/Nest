@@ -36,5 +36,7 @@ export class PropertyService {
     return await this.propertyRepository.update({ id }, dto);
   }
 
-  async delete() {}
+  async delete(id: number) {
+    return await this.propertyRepository.delete({ id });
+  }
 }

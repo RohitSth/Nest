@@ -1,19 +1,15 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
-  ParseBoolPipe,
   ParseIntPipe,
   Patch,
   Post,
-  Query,
-  ValidationPipe,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { ParseIdPipe } from './pipes/parseIdpipe';
-import { HeadersDto } from './dto/headers.dto';
-import { RequestHeader } from './pipes/request-header';
 import { PropertyService } from './property.service';
 import { UpdatePropertDto } from './dto/updateProperty.dto';
 
@@ -46,5 +42,9 @@ export class PropertyController {
     body: UpdatePropertDto,
   ) {
     return this.propertyService.update(id, body);
+  }
+  @Delete(':id')
+  delete(@Param('id', ParseIdPipe) id) {
+    return this.propertyService.delete(id);
   }
 }
