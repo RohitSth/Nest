@@ -682,6 +682,23 @@ export class PropertyController {
 
 ```
 
+## Dependency Injection
+
+```typescript
+
+@Controller('property')
+export class PropertyController {
+  constructor(private propertyService: PropertyService) {
+    // Don't create your dependencies like this in a real application, instead use dependency injection
+    // this.properyService = new PropertyService();
+  }
+
+  @Get()
+  findAll() {
+    return this.propertyService.findAll();
+  }
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
