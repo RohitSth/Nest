@@ -710,6 +710,36 @@ npm i --save @nestjs/typeorm typeorm mysql2
 npm i --save @nestjs/typeorm typeorm pg
 ```
 
+Setting up TypeORM
+
+```typescript
+//After installation, in app.module.ts
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { PropertyModule } from './property/property.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { pgConfig } from 'dbConfig';
+
+@Module({
+  imports: [PropertyModule, TypeOrmModule.forRoot(pgConfig)], // Add TypeOrmModule here along with the config
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+
+// For the config, in the root directory, make a dbConfig.ts file
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+
+export const pgConfig: PostgresConnectionOptions = {
+  url: 'your db url',
+  type: 'postgres',
+  port: 3306,
+  entities: [],
+  synchronize: true, // This will automatically create the tables in the database // For development only, use false for production
+};
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
