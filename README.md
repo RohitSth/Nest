@@ -641,6 +641,47 @@ export const RequestHeader = createParamDecorator(
 
 ```
 
+## Inversion Of Control
+
+- Normally a class would create it's own dependencies but with Inversion Of Control an external entity like a framework takes the control and create the dependencies for the classes.
+
+```typescript
+//Dependency injection can be implemented like this
+
+@Controller('property')
+export class PropertyController {
+  properyService: PropertyService;
+  constructor(propertyService: PropertyService) {
+    // Don't create your dependencies like this in a real application, instead use dependency injection
+    // this.properyService = new PropertyService();
+
+    this.properyService = propertyService; // This is how we can use dependency injection
+  }
+
+
+
+//SO this will benefit us to do this
+
+interface Service {
+  findAll();
+  findOne();
+  create();
+  update();
+}
+
+@Controller('property')
+export class PropertyController {
+  properyService: PropertyService;
+  constructor(propertyService: Service) {
+    // Don't create your dependencies like this in a real application, instead use dependency injection
+    // this.properyService = new PropertyService();
+
+    this.properyService = propertyService; // This is how we can use dependency injection
+  }
+
+
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values

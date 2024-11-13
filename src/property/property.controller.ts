@@ -14,12 +14,28 @@ import { CreatePropertyDto } from './dto/createProperty.dto';
 import { ParseIdPipe } from './pipes/parseIdpipe';
 import { HeadersDto } from './dto/headers.dto';
 import { RequestHeader } from './pipes/request-header';
+import { PropertyService } from './property.service';
+
+interface Service {
+  findAll();
+  findOne();
+  create();
+  update();
+}
 
 @Controller('property')
 export class PropertyController {
+  properyService: PropertyService;
+  constructor(propertyService: Service) {
+    // Don't create your dependencies like this in a real application, instead use dependency injection
+    // this.properyService = new PropertyService();
+
+    this.properyService = propertyService; // This is how we can use dependency injection
+  }
+
   @Get()
   findAll() {
-    return 'This action returns all properties';
+    return this.properyService.findAll();
   }
 
   //   @HttpCode(202) // This is how we can change the http status code for any the http requests we want
@@ -32,7 +48,7 @@ export class PropertyController {
     @Body()
     body: CreatePropertyDto,
   ) {
-    return body;
+    return this.properyService.create(body);
   }
 
   @Patch(':id')
@@ -43,15 +59,12 @@ export class PropertyController {
     @RequestHeader(new ValidationPipe({ validateCustomDecorators: true }))
     header: HeadersDto,
   ) {
-    return header;
+    return this.properyService.update();
   }
 
   @Get(':id') //dynamic parameter
   findOne(@Param('id', ParseIntPipe) id, @Query('sort', ParseBoolPipe) sort) {
-    console.log(typeof id);
-    console.log(typeof sort);
-
-    return `This action returns a property ${id}`;
+    return this.properyService.findOne(id);
   }
 
   //   @Get(':id/:slug') //this returns an object with id and slug. Eg. {id: 1, slug: 'property-1'}
