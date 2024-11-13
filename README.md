@@ -845,6 +845,31 @@ import { Property } from 'src/entities/property.entity';
 export class PropertyModule {}
 ```
 
+- In the service, we inject the repository of our entity
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Property } from 'src/entities/property.entity';
+import { Repository } from 'typeorm';
+import { CreatePropertyDto } from './dto/createProperty.dto';
+
+@Injectable()
+export class PropertyService {
+  constructor(
+    @InjectRepository(Property)
+    private propertyRepository: Repository<Property>,
+  ) {} // here
+  async findOne() {}
+  async findAll() {}
+  async create(dto: CreatePropertyDto) {
+    return await this.propertyRepository.save(dto); // then here we call the repo.save function // this will insert a new record in the table
+  }
+  async update() {}
+  async delete() {}
+}
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
