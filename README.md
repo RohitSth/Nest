@@ -699,6 +699,17 @@ export class PropertyController {
   }
 ```
 
+## Type ORM
+
+Installation
+
+```bash
+npm i --save @nestjs/typeorm typeorm mysql2
+
+// for postgres
+npm i --save @nestjs/typeorm typeorm pg
+```
+
 ## Best Practices
 
 1. Always specify types for parameters and return values
