@@ -25,6 +25,11 @@ export class PropertyController {
     return this.propertyService.findAll();
   }
 
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id) {
+    return this.propertyService.findOne(id);
+  }
+
   @Post()
   create(
     @Body()
@@ -43,20 +48,4 @@ export class PropertyController {
   ) {
     return this.propertyService.update();
   }
-
-  @Get(':id') //dynamic parameter
-  findOne(@Param('id', ParseIntPipe) id, @Query('sort', ParseBoolPipe) sort) {
-    return this.propertyService.findOne();
-  }
-
-  //   @Get(':id/:slug') //this returns an object with id and slug. Eg. {id: 1, slug: 'property-1'}
-  //   findOne(@Param() id) {
-  //     return id;
-  //   }
-
-  // Can also be written as
-  //   @Get(':id/:slug') //this returns an object with id and slug. Eg. {id: 1, slug: 'property-1'}
-  //   findOne(@Param('id') id, @Param('slug') slug) {
-  //     return `id: ${id}, slug: ${slug}`;
-  //   }
 }

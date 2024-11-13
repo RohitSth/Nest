@@ -10,8 +10,14 @@ export class PropertyService {
     @InjectRepository(Property)
     private propertyRepository: Repository<Property>,
   ) {}
-  async findOne() {}
   async findAll() {}
+  async findOne(id: number) {
+    return await this.propertyRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
   async create(dto: CreatePropertyDto) {
     return await this.propertyRepository.save(dto);
   }
