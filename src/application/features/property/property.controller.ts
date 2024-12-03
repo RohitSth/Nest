@@ -8,10 +8,10 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreatePropertyDto } from './dto/createProperty.dto';
-import { ParseIdPipe } from './pipes/parseIdpipe';
+import { CreatePropertyDto } from 'src/core/dtos/property/createProperty.dto';
+import { ParseIdPipe } from '../../../core/pipes/parseIdpipe';
 import { PropertyService } from './property.service';
-import { UpdatePropertDto } from './dto/updateProperty.dto';
+import { UpdatePropertDto } from 'src/core/dtos/property/updateProperty.dto';
 
 @Controller('property')
 export class PropertyController {

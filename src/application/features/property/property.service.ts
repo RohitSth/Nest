@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Property } from 'src/entities/property.entity';
+import { Property } from 'src/data-services/pg/entities/property.entity';
 import { Repository } from 'typeorm';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { UpdatePropertDto } from './dto/updateProperty.dto';
